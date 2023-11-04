@@ -13,5 +13,6 @@ namespace system_ogloszeniowy
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }

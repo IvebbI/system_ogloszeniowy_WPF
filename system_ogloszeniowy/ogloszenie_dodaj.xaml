@@ -1,0 +1,110 @@
+﻿<Window x:Class="system_ogloszeniowy.ogloszenie_dodaj"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:system_ogloszeniowy"
+        mc:Ignorable="d"
+        Title="ogloszenie_dodaj" Height="850" Width="1600"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <!-- Styl przycisku -->
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Style.Triggers>
+                <Trigger Property="Content" Value="">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Styl obrazka -->
+        <Style TargetType="Image">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+        </Style>
+
+        <!-- Styl stosu paneli -->
+        <Style TargetType="StackPanel">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0,20"/>
+        </Style>
+
+        <!-- Styl siatki -->
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Logo -->
+            <Image Source="/logo.jpg" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" />
+
+            <!-- Przyciski menu -->
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="2" Margin="300,0,0,0">
+                <Button Content="Strona główna" Width="130px" Click="StronaGlowna_Click"/>
+                <Button Content="Oferty pracy" Width="130px" Click="OfertyPracy_Click" />
+                <Button Content="Mój profil"  Click="Mojprofil_Click"/>
+            </StackPanel>
+
+            <!-- Ikona konta -->
+            <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="400,0,300,0" Height="100px" Click="MojeKonto_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="/account.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Ikona koszyka -->
+            <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" Click="DodajOgloszenie_Click" Margin="0,0,150,0" Height="100px">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="/icon_add.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <WrapPanel>
+                <TextBox x:Name="NazwaTextBox" Width="200" Height="30" Margin="10" Text="Nazwa stanowiska"/>
+                <TextBox x:Name="PoziomStanowiskaTextBox" Width="200" Height="30" Margin="10" Text="Poziom stanowiska"/>
+                <TextBox x:Name="RodzajUmowyTextBox" Width="200" Height="30" Margin="10" Text="Rodzaj umowy"/>
+                <TextBox x:Name="WymiarEtatuTextBox" Width="200" Height="30" Margin="10" Text="Pełny etat"/>
+                <TextBox x:Name="RodzajPracyTextBox" Width="200" Height="30" Margin="10" Text="Rodzaj pracy"/>
+                <TextBox x:Name="WidelkiWynagrodzeniaTextBox" Width="200" Height="30" Margin="10" Text="Widełki wynagrodzenia"/>
+                <TextBox x:Name="DniPracyTextBox" Width="200" Height="30" Margin="10" Text="Dni pracy"/>
+                <TextBox x:Name="GodzinyPracyTextBox" Width="200" Height="30" Margin="10" Text="Godziny pracy"/>
+                <TextBox x:Name="DataWaznosciTextBox" Width="200" Height="30" Margin="10" Text="2023-11-10"/>
+                <TextBox x:Name="KategoriaTextBox" Width="200" Height="30" Margin="10" Text="Kategoria"/>
+                <TextBox x:Name="ZakresObowiazkowTextBox" Width="200" Height="30" Margin="10" Text="Zakres obowiązków"/>
+                <TextBox x:Name="WymaganiaKandydataTextBox" Width="200" Height="30" Margin="10" Text="Wymagania kandydata"/>
+                <TextBox x:Name="OferowaneBenefityTextBox" Width="200" Height="30" Margin="10" Text="Oferowane benefity"/>
+                <TextBox x:Name="InformacjeOFirmieTextBox" Width="200" Height="30" Margin="10" Text="Informacje o firmie"/>
+
+                <Button Content="Dodaj Ogłoszenie" Width="150" Height="50" Margin="10" Click="DodajKilkaFirmIOgloszen"/>
+            </WrapPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

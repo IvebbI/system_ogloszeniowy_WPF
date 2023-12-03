@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static system_ogloszeniowy.Baza_Logowanie;
 
 namespace system_ogloszeniowy
 {
@@ -22,7 +23,6 @@ namespace system_ogloszeniowy
         public Glowna()
         {
             InitializeComponent();
-        
         }
         private void StronaGlowna_Click(object sender, RoutedEventArgs e)
         {
@@ -30,6 +30,11 @@ namespace system_ogloszeniowy
             Glowna glowna = new Glowna();
             glowna.Show();
             Close();
+        }
+        public void SetSession(string userEmail)
+        {
+            SessionManager.SetLoggedInUser(userEmail);
+            Baza_Logowanie.CheckLoggedInUser();
         }
         private void OfertyPracy_Click(object sender, RoutedEventArgs e)
         {

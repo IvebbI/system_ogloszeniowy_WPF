@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using static system_ogloszeniowy.Baza_Logowanie;
+using static system_ogloszeniowy.BazaDanych_ogloszenie;
+using System.IO;
+using Path = System.IO.Path;
 
 namespace system_ogloszeniowy
 {
@@ -22,6 +28,260 @@ namespace system_ogloszeniowy
         public mojprofil()
         {
             InitializeComponent();
+            Baza_Logowanie.CheckLoggedInUser();
+            if (SessionManager.IsUserLoggedIn)
+            {
+                WyswietlProfilUzytkownika();
+                int idUzytkownika = SessionManager.GetLoggedInUserId();
+                WyswietlOgloszeniaUzytkownika(idUzytkownika);
+            }
+            else
+            {
+                MessageBox.Show("Użytkownik nie jest zalogowany.");
+            }
+        }
+        private static string DbName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ogloszenie_baza.db");
+
+
+        private void WyswietlOgloszeniaUzytkownika(int idUzytkownika)
+        {
+            string selectOgloszeniaQuery = "SELECT * FROM Ogloszenie WHERE id_uzytkownika = @idUzytkownika";
+
+            using (var connection = new SQLiteConnection($"Data Source={DbName};Version=3;"))
+            {
+                connection.Open();
+
+                using (var command = new SQLiteCommand(selectOgloszeniaQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@idUzytkownika", idUzytkownika);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Tworzenie karty ogłoszenia
+                            Grid mainGrid = new Grid();
+                            MainStackPanel.Children.Add(mainGrid);
+
+                            mainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                            mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                            // Dodaj Border do karty ogłoszenia
+                            Border border = new Border()
+                            {
+                                BorderBrush = Brushes.Black,
+                                BorderThickness = new Thickness(1),
+                                Width = 350,
+                                Margin = new Thickness(10),
+                            };
+
+                            TextBlock headerTextBlock = new TextBlock()
+                            {
+                                Text = "Ogłoszenie",
+                                FontWeight = FontWeights.Bold,
+                                FontSize = 24,
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                                Margin = new Thickness(0, 20, 0, 10),
+                            };
+
+                            // Pobierz dane ogłoszenia z readera
+                            string nazwaOgloszenia = reader["nazwa"].ToString();
+                            string kategoriaOgloszenia = reader["kategoria"].ToString();
+                            string inneDaneOgloszenia = "Dodatkowe informacje o ogłoszeniu...";
+
+                            // Przykładowe dane ogłoszenia
+                            TextBlock nazwaOgloszeniaTextBlock = new TextBlock()
+                            {
+                                Text = $"Nazwa: {nazwaOgloszenia}",
+                                FontWeight = FontWeights.Bold,
+                                HorizontalAlignment = HorizontalAlignment.Left,
+                                Margin = new Thickness(0, 10, 0, 5),
+                            };
+
+                            TextBlock kategoriaOgloszeniaTextBlock = new TextBlock()
+                            {
+                                Text = $"Kategoria: {kategoriaOgloszenia}",
+                                Margin = new Thickness(0, 5, 0, 5),
+                            };
+
+                            TextBlock inneDaneOgloszeniaTextBlock = new TextBlock()
+                            {
+                                Text = inneDaneOgloszenia,
+                                Margin = new Thickness(0, 5, 0, 10),
+                            };
+
+                            StackPanel stackPanel = new StackPanel();
+                            stackPanel.Children.Add(headerTextBlock);
+                            stackPanel.Children.Add(nazwaOgloszeniaTextBlock);
+                            stackPanel.Children.Add(kategoriaOgloszeniaTextBlock);
+                            stackPanel.Children.Add(inneDaneOgloszeniaTextBlock);
+
+                            // Dodaj StackPanel do Bordera
+                            border.Child = stackPanel;
+
+                            // Dodaj Border do Grida
+                            mainGrid.Children.Add(border);
+
+                            // Dodaj obsługę kliknięcia do przechodzenia do szczegółów ogłoszenia
+                            mainGrid.MouseLeftButtonDown += (sender, e) =>
+                            {
+                                //PrzejdzDoSzczegolowOgloszenia(idUzytkownika, Convert.ToInt32(reader["id"]));
+                            };
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+        }
+
+
+
+        private void WyswietlProfilUzytkownika()
+        {
+            if (SessionManager.IsUserLoggedIn)
+            {
+                string userEmail = SessionManager.LoggedInUser;
+                Baza_Logowanie.UserData userData = Baza_Logowanie.GetUserData(userEmail);
+
+                if (userData != null)
+                {
+                    // Wyświetlanie profilu użytkownika
+                    Grid mainGrid = new Grid();
+                    MainStackPanel.Children.Add(mainGrid);
+
+                    mainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                    TextBlock headerTextBlock = new TextBlock()
+                    {
+                        Text = "Mój Profil",
+                        FontWeight = FontWeights.Bold,
+                        FontSize = 24,  // Zwiększenie rozmiaru czcionki
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Margin = new Thickness(0, 20, 0, 10),  // Zwiększenie marginesu
+                    };
+
+                    Border border = new Border()
+                    {
+                        BorderBrush = Brushes.Black,
+                        BorderThickness = new Thickness(1),
+                        Width = 350,  // Zwiększenie szerokości karty
+                        Margin = new Thickness(10),
+                    };
+
+                    Image image = null;
+                    if (!string.IsNullOrEmpty(userData.LinkDoZdjecia))
+                    {
+                        image = new Image()
+                        {
+                            Height = 200,  // Zwiększenie wysokości zdjęcia
+                            Width = 200,   // Zwiększenie szerokości zdjęcia
+                            Source = new BitmapImage(new Uri(userData.LinkDoZdjecia)),
+                            Margin = new Thickness(0, 10, 0, 10),  // Zwiększenie marginesu
+                        };
+                    }
+
+                    TextBlock imieNazwiskoTextBlock = new TextBlock()
+                    {
+                        Text = $"{userData.Imie} {userData.Nazwisko}",
+                        FontWeight = FontWeights.Bold,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        FontSize = 18,  // Zwiększenie rozmiaru czcionki
+                        Margin = new Thickness(0, 10, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock emailTextBlock = new TextBlock()
+                    {
+                        Text = $"Email: {userData.Email}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock dateUrodzeniaTextBlock = new TextBlock()
+                    {
+                        Text = $"Data urodzenia: {userData.DateUrodzenia}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock telefonTextBlock = new TextBlock()
+                    {
+                        Text = $"Telefon: {userData.Telefon}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    // Dodaj dodatkowe informacje
+                    TextBlock adresTextBlock = new TextBlock()
+                    {
+                        Text = $"Adres: {userData.Adres}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock stanowiskoPracyTextBlock = new TextBlock()
+                    {
+                        Text = $"Stanowisko pracy: {userData.StanowiskoPracy}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock opisPracyTextBlock = new TextBlock()
+                    {
+                        Text = $"Opis pracy: {userData.OpisPracy}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock podsumowanieZawodoweTextBlock = new TextBlock()
+                    {
+                        Text = $"Podsumowanie zawodowe: {userData.PodsumowanieZawodowe}",
+                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                    };
+
+                    TextBlock githubProfilTextBlock = new TextBlock()
+                    {
+                        Text = $"Profil GitHub: {userData.GithubProfil}",
+                        Margin = new Thickness(0, 5, 0, 10),  // Zwiększenie marginesu
+                    };
+           
+
+                    // Dodaj więcej informacji na temat użytkownika według potrzeb
+
+                    StackPanel stackPanel = new StackPanel();
+                    stackPanel.Children.Add(headerTextBlock);
+                    stackPanel.Children.Add(image);
+                    stackPanel.Children.Add(imieNazwiskoTextBlock);
+                    stackPanel.Children.Add(emailTextBlock);
+                    stackPanel.Children.Add(dateUrodzeniaTextBlock);
+                    stackPanel.Children.Add(telefonTextBlock);
+                    stackPanel.Children.Add(adresTextBlock);
+                    stackPanel.Children.Add(stanowiskoPracyTextBlock);
+                    stackPanel.Children.Add(opisPracyTextBlock);
+                    stackPanel.Children.Add(podsumowanieZawodoweTextBlock);
+                    stackPanel.Children.Add(githubProfilTextBlock);
+
+                    border.Child = stackPanel;
+                    mainGrid.Children.Add(border);
+
+                    border.MouseLeftButtonDown += (sender, e) =>
+                    {
+                        // Przejście do szczegółów użytkownika
+                        PrzejdzDoStronySzczegolowUzytkownika(userData);
+                    };
+                }
+                else
+                {
+                    MessageBox.Show("Nie udało się pobrać danych użytkownika.");
+                }
+            }
+        }
+
+
+
+
+        private void PrzejdzDoStronySzczegolowUzytkownika(Baza_Logowanie.UserData userData)
+        {
+            SzczegolyOferty szczegoly = new SzczegolyOferty();
+            szczegoly.Show();
+            Close(); 
         }
         private void StronaGlowna_Click(object sender, RoutedEventArgs e)
         {

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static system_ogloszeniowy.Baza_Logowanie;
 
 namespace system_ogloszeniowy
 {
@@ -23,6 +24,12 @@ namespace system_ogloszeniowy
         {
             InitializeComponent();
         }
+       
+
+
+
+
+
         private void StronaGlowna_Click(object sender, RoutedEventArgs e)
         {
             // Przekierowanie na stronę główną

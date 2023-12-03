@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static system_ogloszeniowy.Baza_Logowanie;
 using static system_ogloszeniowy.BazaDanych_ogloszenie;
 
 namespace system_ogloszeniowy
@@ -19,16 +20,19 @@ namespace system_ogloszeniowy
     public partial class oferty_pracy : Window
     {
 
-
+        private Baza_Logowanie.UserData userData;
 
 
         public oferty_pracy()
         {
             InitializeComponent();
             WyswietlOfertyPracy();
+            Baza_Logowanie.CheckLoggedInUser();
         }
+
         private void WyswietlOfertyPracy()
         {
+
             List<(Ogloszenie, Firma)> oferty = BazaDanych_ogloszenie.PobierzOgloszeniaIFirmy(); // Pobierz oferty z bazy danych
 
             Grid mainGrid = new Grid();
@@ -107,19 +111,21 @@ namespace system_ogloszeniowy
                 Grid.SetRow(border, i / 3);
                 Grid.SetColumn(border, i % 3);
 
-               
+
                 border.MouseLeftButtonDown += (sender, e) =>
                 {
-                    PrzejdzDoStronySzczegolow(oferty[i]);
+                    MessageBox.Show("Przycisnieto przycisk pozdro");
+                    PrzejdzDoStronySzczegolowUzytkownika(userData, ogloszenie, firma);
                 };
             }
         }
 
 
-
-        private void PrzejdzDoStronySzczegolow((Ogloszenie, Firma) oferta)
+        private void PrzejdzDoStronySzczegolowUzytkownika(Baza_Logowanie.UserData userData, BazaDanych_ogloszenie.Ogloszenie ogloszenie, BazaDanych_ogloszenie.Firma firma)
         {
-   
+            SzczegolyOferty szczegoly = new SzczegolyOferty(userData, ogloszenie, firma);
+            szczegoly.Show();
+            Close();
         }
 
 

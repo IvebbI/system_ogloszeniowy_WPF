@@ -88,6 +88,7 @@
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <WrapPanel>
+                <ListBox x:Name="listBoxOfertyPracy"  Width="1600" Height="200" />
                 <TextBox x:Name="NazwaTextBox" Width="200" Height="30" Margin="10" Text="Nazwa stanowiska"/>
                 <TextBox x:Name="PoziomStanowiskaTextBox" Width="200" Height="30" Margin="10" Text="Poziom stanowiska"/>
                 <TextBox x:Name="RodzajUmowyTextBox" Width="200" Height="30" Margin="10" Text="Rodzaj umowy"/>
@@ -101,9 +102,13 @@
                 <TextBox x:Name="ZakresObowiazkowTextBox" Width="200" Height="30" Margin="10" Text="Zakres obowiązków"/>
                 <TextBox x:Name="WymaganiaKandydataTextBox" Width="200" Height="30" Margin="10" Text="Wymagania kandydata"/>
                 <TextBox x:Name="OferowaneBenefityTextBox" Width="200" Height="30" Margin="10" Text="Oferowane benefity"/>
+                <TextBox x:Name="InformacjeTextBox" Width="200" Height="30" Margin="10" Text="Informacje"/>
+                <TextBox x:Name="AdresFirmyTextBox" Width="200" Height="30" Margin="10" Text="Adres firmy"/>
+                <TextBox x:Name="LokalizacjaGeograficznaTextBox" Width="200" Height="30" Margin="10" Text="Lokalizacja Geograficzna"/>
                 <TextBox x:Name="InformacjeOFirmieTextBox" Width="200" Height="30" Margin="10" Text="Informacje o firmie"/>
+                <TextBox x:Name="LogoUrlTextBox" Width="200" Height="30" Margin="10" Text="LogoUrltextbox"/>
 
-                <Button Content="Dodaj Ogłoszenie" Width="150" Height="50" Margin="10" Click="DodajKilkaFirmIOgloszen"/>
+                <Button Content="Dodaj Ogłoszenie" Width="150" Height="50" Margin="10" Click="DodajOgloszeniee_Click"/>
             </WrapPanel>
         </ScrollViewer>
     </Grid>

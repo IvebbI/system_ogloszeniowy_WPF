@@ -13,6 +13,14 @@ namespace system_ogloszeniowy
     /// </summary>
     public partial class App : Application
     {
-        
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            //odkomentuj ten kod ponizej tylko najpierw zdebuguj z tą linią nastepnie zakomentuj i odpal   Baza_Logowanie.InitializeDatabase(); 
+            //BazaDanych_ogloszenie.CreateDatabaseAndTables();
+            Baza_Logowanie.InitializeDatabase();
+           
+        }
+
     }
 }

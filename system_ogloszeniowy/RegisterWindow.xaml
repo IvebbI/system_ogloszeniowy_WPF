@@ -1,0 +1,49 @@
+﻿<Window x:Class="system_ogloszeniowy.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Register" Height="700" Width="500">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Email:"/>
+            <TextBox x:Name="emailTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Password:"/>
+            <PasswordBox x:Name="passwordBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Confirm Password:"/>
+            <PasswordBox x:Name="confirmPasswordBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Imię:"/>
+            <TextBox x:Name="imieTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Nazwisko:"/>
+            <TextBox x:Name="nazwiskoTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Data urodzenia:"/>
+            <TextBox x:Name="dateurodzeniaTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Telefon:"/>
+            <TextBox x:Name="telefonTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Link do zdjęcia:"/>
+            <TextBox x:Name="linkdozdjeciaTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Adres:"/>
+            <TextBox x:Name="adresTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Stanowisko pracy:"/>
+            <TextBox x:Name="stanowiskopracyTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Opis pracy:"/>
+            <TextBox x:Name="opispracyTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Podsumowanie zawodowe:"/>
+            <TextBox x:Name="podsumowaniezawodoweTextBox" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Profil GitHub (link):"/>
+            <TextBox x:Name="githubprofilTextBox" Margin="0,0,0,10"/>
+
+            <Button Content="Register" Click="RegisterButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

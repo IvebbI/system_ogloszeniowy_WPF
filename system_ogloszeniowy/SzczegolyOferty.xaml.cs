@@ -146,7 +146,7 @@ namespace system_ogloszeniowy
             };
             TextBlock informacjeofirmie = new TextBlock()
             {
-                Text = $"Informacje o firmie: {ogloszenie.InformacjeOFirmie}",
+                Text = $"Informacje o firmie: {firma.Informacje}",
                 Margin = new Thickness(0, 0, 0, 10),
             };
 

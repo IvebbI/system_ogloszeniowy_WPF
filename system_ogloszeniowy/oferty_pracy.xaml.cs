@@ -53,9 +53,16 @@ namespace system_ogloszeniowy
                 {
                     BorderBrush = Brushes.Black,
                     BorderThickness = new Thickness(1),
-                    Width = 250, 
+                    Width = 250,
                     Margin = new Thickness(10),
                     Height = 200,
+                    Background = Brushes.Transparent, // Ustawienie Transparent tła
+                };
+
+                border.MouseLeftButtonDown += (sender, e) =>
+                {
+                    MessageBox.Show("Przycisnieto przycisk pozdro");
+                    PrzejdzDoStronySzczegolowUzytkownika(userData, ogloszenie, firma);
                 };
 
                 TextBlock idTextBlock = new TextBlock()
@@ -112,11 +119,8 @@ namespace system_ogloszeniowy
                 Grid.SetColumn(border, i % 3);
 
 
-                border.MouseLeftButtonDown += (sender, e) =>
-                {
-                    MessageBox.Show("Przycisnieto przycisk pozdro");
-                    PrzejdzDoStronySzczegolowUzytkownika(userData, ogloszenie, firma);
-                };
+
+
             }
         }
 
@@ -125,8 +129,10 @@ namespace system_ogloszeniowy
         {
             SzczegolyOferty szczegoly = new SzczegolyOferty(userData, ogloszenie, firma);
             szczegoly.Show();
-            Close();
+            // Nie zamykaj bieżącego okna, aby wrócić do niego po zamknięciu okna SzczegolyOferty
+            // Close();
         }
+
 
 
 

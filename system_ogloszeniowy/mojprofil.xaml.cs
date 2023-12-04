@@ -24,7 +24,7 @@ namespace system_ogloszeniowy
     /// Logika interakcji dla klasy mojprofil.xaml
     /// </summary>
     public partial class mojprofil : Window
-    {
+    { 
         public mojprofil()
         {
             InitializeComponent();
@@ -136,6 +136,13 @@ namespace system_ogloszeniowy
             }
         }
 
+        private void Przycisk_Click(object sender, RoutedEventArgs e)
+        {
+            EdytujProfil nowaStrona = new EdytujProfil();
+            nowaStrona.Show();
+            Close();
+        }
+
 
 
         private void WyswietlProfilUzytkownika()
@@ -154,7 +161,14 @@ namespace system_ogloszeniowy
                     mainGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                     mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Button edytujProfilButton = new Button()
+                    {
+                        Content = "Edytuj profil",
+                        Width=300,
+                        Margin = new Thickness(0, 10, 0, 0), // Dostosuj margines według potrzeb
+                    };
 
+                    edytujProfilButton.Click += Przycisk_Click;
                     TextBlock headerTextBlock = new TextBlock()
                     {
                         Text = "Mój Profil",
@@ -257,7 +271,7 @@ namespace system_ogloszeniowy
                     stackPanel.Children.Add(opisPracyTextBlock);
                     stackPanel.Children.Add(podsumowanieZawodoweTextBlock);
                     stackPanel.Children.Add(githubProfilTextBlock);
-
+                    stackPanel.Children.Add(edytujProfilButton);
                     border.Child = stackPanel;
                     mainGrid.Children.Add(border);
 

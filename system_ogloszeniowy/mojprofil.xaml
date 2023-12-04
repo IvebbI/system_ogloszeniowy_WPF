@@ -78,8 +78,6 @@
 
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="MainStackPanel" Orientation="Vertical">
-             
-                <!-- Tutaj umieść inne elementy XAML -->
             </StackPanel>
         </ScrollViewer>
     </Grid>

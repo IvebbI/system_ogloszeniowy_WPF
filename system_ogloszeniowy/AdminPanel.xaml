@@ -8,6 +8,7 @@
         Title="mojekonto" Height="850" Width="1600"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <!-- Styl przycisku -->
         <Style TargetType="Button">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="Black"/>
@@ -22,20 +23,32 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Styl obrazka -->
         <Style TargetType="Image">
             <Setter Property="Height" Value="50"/>
             <Setter Property="Width" Value="50"/>
         </Style>
+
+        <!-- Styl stosu paneli -->
         <Style TargetType="StackPanel">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="0,20"/>
         </Style>
+
+        <!-- Styl siatki -->
         <Style TargetType="Grid">
             <Setter Property="Background" Value="White"/>
         </Style>
     </Window.Resources>
-    <StackPanel>
+
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -44,38 +57,39 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-
+            <!-- Logo -->
             <Image Source="/logo.jpg" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" />
 
-
+            <!-- Przyciski menu -->
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="2" Margin="300,0,0,0">
                 <Button Content="Strona główna" Width="130px" Click="StronaGlowna_Click"/>
                 <Button Content="Oferty pracy" Width="130px" Click="OfertyPracy_Click" />
                 <Button Content="Mój profil"  Click="Mojprofil_Click"/>
             </StackPanel>
 
-
-            <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center"  Margin="200,0,300,0" Height="100px" Click="MojeKonto_Click">
+            <!-- Ikona konta -->
+            <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="400,0,300,0" Height="100px" Click="MojeKonto_Click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <Image Source="/account.png" />
+                        <Image Source="/adminzdj.jpg" />
                     </ControlTemplate>
                 </Button.Template>
             </Button>
 
-
-            <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center"  Margin="0,0,150,0" Height="100px" Click="DodajOgloszenie_Click">
+            <!-- Ikona koszyka -->
+            <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" Click="DodajOgloszenie_Click" Margin="0,0,150,0" Height="100px">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Image Source="/icon_add.png" />
-
                     </ControlTemplate>
                 </Button.Template>
             </Button>
         </Grid>
 
-       
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <WrapPanel x:Name="MainStackPanel" Margin="20" MaxWidth="1200">
 
-    </StackPanel>
-
+            </WrapPanel>
+        </ScrollViewer>
+    </Grid>
 </Window>

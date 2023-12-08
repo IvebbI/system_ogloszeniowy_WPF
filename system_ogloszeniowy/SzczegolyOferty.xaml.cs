@@ -191,14 +191,42 @@ namespace system_ogloszeniowy
         }
         private void Aplikuj_Click(object sender, RoutedEventArgs e)
         {
-
             BazaDanych_ogloszenie bazadanych = new BazaDanych_ogloszenie();
             int uzytkownikId = SessionManager.GetLoggedInUserId();
             int ogloszenieId = bazadanych.PobierzOstatnieIdOgloszenia();
-            DodajAplikacje(uzytkownikId, ogloszenieId);
-       
 
+            // Sprawdzenie, czy użytkownik już aplikował do tego ogłoszenia
+            if (!CzyUzytkownikAplikowal(uzytkownikId, ogloszenieId))
+            {
+                // Jeśli użytkownik jeszcze nie aplikował, dodaj nowy wpis
+                DodajAplikacje(uzytkownikId, ogloszenieId);
+            }
+            else
+            {
+                // Jeśli użytkownik już aplikował, wyświetl alert
+                MessageBox.Show("Już aplikowałeś do tej oferty!");
+            }
         }
+
+        private bool CzyUzytkownikAplikowal(int uzytkownikId, int ogloszenieId)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={DbName};Version=3;"))
+            {
+                connection.Open();
+
+                string selectQuery = "SELECT COUNT(*) FROM OgloszeniaUdzial WHERE id_ogloszenia = @idOgloszenia AND uzytkownik_id = @idUzytkownika";
+                using (var cmd = new SQLiteCommand(selectQuery, connection))
+                {
+                    cmd.Parameters.AddWithValue("@idOgloszenia", ogloszenieId);
+                    cmd.Parameters.AddWithValue("@idUzytkownika", uzytkownikId);
+
+                    // Sprawdź, czy istnieje wpis w tabeli dla danego ogłoszenia i użytkownika
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
         private static string DbName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ogloszenie_baza.db");
         private void DodajAplikacje(int uzytkownikId, int ogloszenieId)
         {

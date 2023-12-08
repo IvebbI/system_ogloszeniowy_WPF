@@ -11,25 +11,31 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static system_ogloszeniowy.Baza_Logowanie;
+using static system_ogloszeniowy.BazaDanych_ogloszenie;
 
 namespace system_ogloszeniowy
 {
     /// <summary>
-    /// Logika interakcji dla klasy mojekonto.xaml
+    /// Logika interakcji dla klasy ZarzadzanieOgloszeniem.xaml
     /// </summary>
-    public partial class mojekonto : Window
+    public partial class ZarzadzanieOgloszeniem : Window
     {
-        public mojekonto()
+        private int ogloszenieId;
+
+        public ZarzadzanieOgloszeniem(int ogloszenieId)
         {
             InitializeComponent();
+            this.ogloszenieId = ogloszenieId;
+
         }
        
-
-
-
-
-
+        private void ZarzadzajClicked(object sender, RoutedEventArgs e)
+        {
+            // Przekierowanie na stronę główną
+            Glowna glowna = new Glowna();
+            glowna.Show();
+            Close();
+        }
         private void StronaGlowna_Click(object sender, RoutedEventArgs e)
         {
             // Przekierowanie na stronę główną

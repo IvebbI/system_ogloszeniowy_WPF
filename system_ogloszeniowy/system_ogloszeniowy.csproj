@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="account.png" />
+    <None Remove="adminzdj.jpg" />
     <None Remove="icon_add.png" />
     <None Remove="logo.jpg" />
   </ItemGroup>
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <Resource Include="account.png" />
+    <Resource Include="adminzdj.jpg" />
     <Resource Include="icon_add.png" />
     <Resource Include="images\logo.jpg" />
     <Resource Include="logo.jpg" />

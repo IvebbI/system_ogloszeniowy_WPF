@@ -28,7 +28,6 @@ namespace system_ogloszeniowy
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            // Otwórz nowe okno logowania
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
             Close();
@@ -36,7 +35,6 @@ namespace system_ogloszeniowy
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            // Otwórz nowe okno rejestracji
             RegisterWindow registerWindow = new RegisterWindow();
             registerWindow.Show();
             Close();

@@ -27,7 +27,7 @@ namespace system_ogloszeniowy
             else
             {
                 MessageBox.Show("Użytkownik nie jest zalogowany.");
-                Close(); // Zamknij okno edycji profilu, jeśli użytkownik nie jest zalogowany
+                Close(); 
             }
         }
 

@@ -37,8 +37,6 @@ namespace system_ogloszeniowy
 
         private void DodajOgloszeniee_Click(object sender, RoutedEventArgs e)
         {
-            // Tutaj dodaj kod do pobierania danych z formularza
-
             Ogloszenie noweOgloszenie = new Ogloszenie
             {
                 Nazwa = NazwaTextBox.Text,

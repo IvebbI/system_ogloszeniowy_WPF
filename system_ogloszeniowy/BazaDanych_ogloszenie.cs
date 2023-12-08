@@ -127,6 +127,13 @@ namespace system_ogloszeniowy
                         FOREIGN KEY (id_uzytkownika) REFERENCES user(id),
                         FOREIGN KEY (id_ogloszenia) REFERENCES Ogloszenie(id)
                     );
+                    CREATE TABLE IF NOT EXISTS OgloszeniaUdzial (
+                        id INTEGER PRIMARY KEY,
+                        id_ogloszenia INTEGER,
+                        uzytkownik_id INTEGER,
+                        FOREIGN KEY (id_ogloszenia) REFERENCES Ogloszenie(id),    
+                        FOREIGN KEY (uzytkownik_id) REFERENCES user(id)
+                    );
                 ";
 
                 try
@@ -224,7 +231,6 @@ namespace system_ogloszeniowy
 
         public void DodajOgloszenieUzytkownika(int idUzytkownika, int idOgloszenia, string status)
         {
-            // Pobierz id_uzytkownika z sesji
            
 
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={dbName};Version=3;"))
@@ -261,7 +267,7 @@ namespace system_ogloszeniowy
 
         public int PobierzOstatnieIdOgloszenia()
         {
-            int ostatnieId = -1;
+            int ostatnieId = 0;
 
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={dbName};Version=3;"))
             {
@@ -270,13 +276,15 @@ namespace system_ogloszeniowy
 
                 try
                 {
-                    string selectLastInsertIdQuery = "SELECT last_insert_rowid();";
-                    cmd.CommandText = selectLastInsertIdQuery;
+                    // Zamiast ogólnego last_insert_rowid(), używamy konkretnej tabeli i jej identyfikatora.
+                    string selectLastOgloszenieIdQuery = "SELECT MAX(Id) FROM Ogloszenie;";
+                    cmd.CommandText = selectLastOgloszenieIdQuery;
+                    // Używamy Convert.ToInt32 do konwersji wartości na int.
                     ostatnieId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Błąd pobierania ostatniego ID ogłoszenia: " + ex.Message);
+                    Console.WriteLine($"Błąd pobierania ostatniego ID ogłoszenia: {ex}");
                 }
                 finally
                 {
@@ -346,8 +354,25 @@ namespace system_ogloszeniowy
                 Nazwa = GetString(reader, "nazwa"),
                 PoziomStanowiska = GetString(reader, "poziom_stanowiska"),
                 RodzajUmowy = GetString(reader, "rodzaj_umowy"),
+                WymiarEtatu=GetString(reader, "wymiar_etatu"),
+                RodzajPracy=GetString(reader, "rodzaj_pracy"),
+                WidelkiWynagrodzenia=GetString(reader, "widełki_wynagrodzenia"),
+                DniPracy=GetString(reader, "dni_pracy"),
+                GodzinyPracy=GetString(reader, "godziny_pracy"),
+                DataWaznosci = GetDateTime(reader, "data_waznosci"),
+                Kategoria =GetString(reader, "kategoria"),
+                WymaganiaKandydata=GetString(reader, "wymagania_kandydata"),
+                OferowaneBenefity=GetString(reader,"oferowane_benefity"),
+                ZakresObowiazkow=GetString(reader, "zakres_obowiazkow")
+
+
+                
        
             };
+        }
+        private static DateTime GetDateTime(SQLiteDataReader reader, string columnName)
+        {
+            return !reader.IsDBNull(reader.GetOrdinal(columnName)) ? reader.GetDateTime(reader.GetOrdinal(columnName)) : DateTime.MinValue;
         }
 
         private static Firma GetFirmaFromReader(SQLiteDataReader reader)
@@ -357,7 +382,9 @@ namespace system_ogloszeniowy
                 nazwa_firmy = GetString(reader, "nazwa_firmy"),
                 adres_firmy = GetString(reader, "adres"),
                 LokalizacjaGeograficzna = GetString(reader, "lokalizacja_geograficzna"),
-         
+                Informacje = GetString(reader, "informacje"),  
+                logo_url = GetString(reader, "logo_url"),
+
             };
         }
 

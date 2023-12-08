@@ -32,8 +32,7 @@ namespace system_ogloszeniowy
 
         private void WyswietlOfertyPracy()
         {
-
-            List<(Ogloszenie, Firma)> oferty = BazaDanych_ogloszenie.PobierzOgloszeniaIFirmy(); // Pobierz oferty z bazy danych
+            List<(Ogloszenie, Firma)> oferty = BazaDanych_ogloszenie.PobierzOgloszeniaIFirmy();
 
             Grid mainGrid = new Grid();
             MainStackPanel.Children.Add(mainGrid);
@@ -56,29 +55,13 @@ namespace system_ogloszeniowy
                     Width = 250,
                     Margin = new Thickness(10),
                     Height = 200,
-                    Background = Brushes.Transparent, // Ustawienie Transparent tła
+                    Background = Brushes.Transparent,
                 };
 
                 border.MouseLeftButtonDown += (sender, e) =>
                 {
                     MessageBox.Show("Przycisnieto przycisk pozdro");
                     PrzejdzDoStronySzczegolowUzytkownika(userData, ogloszenie, firma);
-                };
-
-                TextBlock idTextBlock = new TextBlock()
-                {
-                    Text = "ID: " + ogloszenie.id_firmy,
-                    FontWeight = FontWeights.Bold,
-                };
-
-                TextBlock nazwaTextBlock = new TextBlock()
-                {
-                    Text = ogloszenie.Nazwa,
-                };
-
-                TextBlock widełkiWynagrodzeniaTextBlock = new TextBlock()
-                {
-                    Text = ogloszenie.WidelkiWynagrodzenia,
                 };
 
                 Image image = null;
@@ -88,49 +71,71 @@ namespace system_ogloszeniowy
                     {
                         Height = 70,
                         Source = new BitmapImage(new Uri(firma.logo_url)),
+                        Margin = new Thickness(5),
                     };
                 }
 
                 TextBlock nazwaFirmyTextBlock = new TextBlock()
                 {
                     Text = firma.nazwa_firmy,
-                    TextAlignment = TextAlignment.Right,
+                    FontWeight = FontWeights.Bold,
+                    TextAlignment = TextAlignment.Left,
+                    Margin = new Thickness(5),
+                };
+
+                TextBlock widełkiWynagrodzeniaTextBlock = new TextBlock()
+                {
+                    Text = ogloszenie.WidelkiWynagrodzenia,
+                    Margin = new Thickness(5),
+                };
+
+                TextBlock RodzajpracyTextBlock = new TextBlock()
+                {
+                    Text = ogloszenie.RodzajPracy,
+                    Margin = new Thickness(5),
                 };
 
                 TextBlock adresFirmyTextBlock = new TextBlock()
                 {
-                    Text = firma.adres_firmy,
+                    Text = "Adres: " + firma.adres_firmy,
+                    Margin = new Thickness(5),
                 };
 
-                StackPanel stackPanel = new StackPanel();
-                stackPanel.Children.Add(idTextBlock);
-                stackPanel.Children.Add(nazwaTextBlock);
-                stackPanel.Children.Add(widełkiWynagrodzeniaTextBlock);
+                StackPanel infoPanel = new StackPanel()
+                {
+                    Orientation = Orientation.Vertical,
+                };
+
+                infoPanel.Children.Add(nazwaFirmyTextBlock);
+                infoPanel.Children.Add(widełkiWynagrodzeniaTextBlock);
+                infoPanel.Children.Add(RodzajpracyTextBlock);
+                infoPanel.Children.Add(adresFirmyTextBlock);
+
+                StackPanel stackPanel = new StackPanel()
+                {
+                    Orientation = Orientation.Horizontal,
+                };
+
                 if (image != null)
                 {
                     stackPanel.Children.Add(image);
                 }
-                stackPanel.Children.Add(nazwaFirmyTextBlock);
-                stackPanel.Children.Add(adresFirmyTextBlock);
+                stackPanel.Children.Add(infoPanel);
 
                 border.Child = stackPanel;
                 mainGrid.Children.Add(border);
                 Grid.SetRow(border, i / 3);
                 Grid.SetColumn(border, i % 3);
-
-
-
-
             }
         }
+        
 
 
         private void PrzejdzDoStronySzczegolowUzytkownika(Baza_Logowanie.UserData userData, BazaDanych_ogloszenie.Ogloszenie ogloszenie, BazaDanych_ogloszenie.Firma firma)
         {
             SzczegolyOferty szczegoly = new SzczegolyOferty(userData, ogloszenie, firma);
             szczegoly.Show();
-            // Nie zamykaj bieżącego okna, aby wrócić do niego po zamknięciu okna SzczegolyOferty
-            // Close();
+            Close();
         }
 
 

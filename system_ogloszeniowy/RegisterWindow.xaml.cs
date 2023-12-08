@@ -27,7 +27,6 @@ namespace system_ogloszeniowy
             string podsumowaniezawodowe = podsumowaniezawodoweTextBox.Text;
             string githubprofil = githubprofilTextBox.Text;
 
-            // Walidacja pól (możesz dostosować zgodnie z potrzebami)
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword) ||
                 string.IsNullOrWhiteSpace(imie) || string.IsNullOrWhiteSpace(nazwisko) || string.IsNullOrWhiteSpace(dateurodzenia) ||
                 string.IsNullOrWhiteSpace(telefon) || string.IsNullOrWhiteSpace(linkdozdjecia) || string.IsNullOrWhiteSpace(adres) ||
@@ -38,28 +37,24 @@ namespace system_ogloszeniowy
                 return;
             }
 
-            // Walidacja adresu e-mail (możesz dostosować zgodnie z potrzebami)
             if (!IsValidEmail(email))
             {
                 MessageBox.Show("Nieprawidłowy format adresu e-mail.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Walidacja hasła
             if (password != confirmPassword)
             {
                 MessageBox.Show("Hasła nie pasują do siebie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Sprawdzenie, czy użytkownik o podanym adresie e-mail już istnieje
             if (Baza_Logowanie.IsEmailAlreadyRegistered(email))
             {
                 MessageBox.Show("Użytkownik o podanym adresie e-mail już istnieje.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Dodanie do bazy danych
             if (Baza_Logowanie.RegisterUser(email, password, 0, imie, nazwisko, dateurodzenia, telefon, linkdozdjecia,
                                             adres, stanowiskopracy, opispracy, podsumowaniezawodowe, githubprofil))
             {
@@ -75,7 +70,6 @@ namespace system_ogloszeniowy
 
         private bool IsValidEmail(string email)
         {
-            // Prosta walidacja adresu e-mail za pomocą regex (możesz dostosować zgodnie z potrzebami)
             string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
             return System.Text.RegularExpressions.Regex.IsMatch(email, emailPattern);
         }

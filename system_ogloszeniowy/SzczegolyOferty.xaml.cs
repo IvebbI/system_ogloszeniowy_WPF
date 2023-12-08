@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using System.IO;
 using static system_ogloszeniowy.Baza_Logowanie;
 
 namespace system_ogloszeniowy
@@ -43,7 +46,6 @@ namespace system_ogloszeniowy
             mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            // Dodaj odpowiednie kontrole TextBox, TextBlock itp., aby wyświetlić informacje
             TextBlock nazwaTextBlock = new TextBlock()
             {
                 Text = $"Nazwa Firmy która ogłosiła ofertę: {firma.nazwa_firmy}",
@@ -149,8 +151,16 @@ namespace system_ogloszeniowy
                 Text = $"Informacje o firmie: {firma.Informacje}",
                 Margin = new Thickness(0, 0, 0, 10),
             };
+            Button aplikujButton = new Button()
+            {
+                Content = "Aplikuj",
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(0, 10, 0, 0),
+            };
+            aplikujButton.Click += Aplikuj_Click;
 
-            // Dodaj więcej kontrolek, jeśli jest taka potrzeba
+
 
             StackPanel stackPanel = new StackPanel();
             stackPanel.Children.Add(nazwaTextBlock);
@@ -171,13 +181,41 @@ namespace system_ogloszeniowy
             stackPanel.Children.Add(wymaganiakandydata);
             stackPanel.Children.Add(oferowanebenefity);
             stackPanel.Children.Add(informacjeofirmie);
+            stackPanel.Children.Add(aplikujButton);
             if (image != null)
             {
                 stackPanel.Children.Add(image);
             }
-            // Dodaj więcej kontrolek, jeśli jest taka potrzeba
 
             mainGrid.Children.Add(stackPanel);
+        }
+        private void Aplikuj_Click(object sender, RoutedEventArgs e)
+        {
+
+            BazaDanych_ogloszenie bazadanych = new BazaDanych_ogloszenie();
+            int uzytkownikId = SessionManager.GetLoggedInUserId();
+            int ogloszenieId = bazadanych.PobierzOstatnieIdOgloszenia();
+            DodajAplikacje(uzytkownikId, ogloszenieId);
+       
+
+        }
+        private static string DbName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ogloszenie_baza.db");
+        private void DodajAplikacje(int uzytkownikId, int ogloszenieId)
+        {
+
+
+            using (var connection = new SQLiteConnection($"Data Source={DbName};Version=3;"))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO OgloszeniaUdzial (id_ogloszenia, uzytkownik_id) VALUES (@idOgloszenia, @idUzytkownika)";
+                using (var cmd = new SQLiteCommand(insertQuery, connection))
+                {
+                    cmd.Parameters.AddWithValue("@idOgloszenia", ogloszenieId);
+                    cmd.Parameters.AddWithValue("@idUzytkownika", uzytkownikId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
         public SzczegolyOferty()
         {

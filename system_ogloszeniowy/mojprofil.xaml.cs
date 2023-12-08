@@ -59,7 +59,6 @@ namespace system_ogloszeniowy
                     {
                         while (reader.Read())
                         {
-                            // Tworzenie karty ogłoszenia
                             Grid mainGrid = new Grid();
                             MainStackPanel.Children.Add(mainGrid);
 
@@ -67,7 +66,6 @@ namespace system_ogloszeniowy
                             mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                             mainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-                            // Dodaj Border do karty ogłoszenia
                             Border border = new Border()
                             {
                                 BorderBrush = Brushes.Black,
@@ -85,12 +83,10 @@ namespace system_ogloszeniowy
                                 Margin = new Thickness(0, 20, 0, 10),
                             };
 
-                            // Pobierz dane ogłoszenia z readera
                             string nazwaOgloszenia = reader["nazwa"].ToString();
                             string kategoriaOgloszenia = reader["kategoria"].ToString();
                             string inneDaneOgloszenia = "Dodatkowe informacje o ogłoszeniu...";
 
-                            // Przykładowe dane ogłoszenia
                             TextBlock nazwaOgloszeniaTextBlock = new TextBlock()
                             {
                                 Text = $"Nazwa: {nazwaOgloszenia}",
@@ -117,16 +113,12 @@ namespace system_ogloszeniowy
                             stackPanel.Children.Add(kategoriaOgloszeniaTextBlock);
                             stackPanel.Children.Add(inneDaneOgloszeniaTextBlock);
 
-                            // Dodaj StackPanel do Bordera
                             border.Child = stackPanel;
 
-                            // Dodaj Border do Grida
                             mainGrid.Children.Add(border);
 
-                            // Dodaj obsługę kliknięcia do przechodzenia do szczegółów ogłoszenia
                             mainGrid.MouseLeftButtonDown += (sender, e) =>
                             {
-                                //PrzejdzDoSzczegolowOgloszenia(idUzytkownika, Convert.ToInt32(reader["id"]));
                             };
                         }
                     }
@@ -154,7 +146,6 @@ namespace system_ogloszeniowy
 
                 if (userData != null)
                 {
-                    // Wyświetlanie profilu użytkownika
                     Grid mainGrid = new Grid();
                     MainStackPanel.Children.Add(mainGrid);
 
@@ -165,7 +156,7 @@ namespace system_ogloszeniowy
                     {
                         Content = "Edytuj profil",
                         Width=300,
-                        Margin = new Thickness(0, 10, 0, 0), // Dostosuj margines według potrzeb
+                        Margin = new Thickness(0, 10, 0, 0), 
                     };
 
                     edytujProfilButton.Click += Przycisk_Click;
@@ -173,16 +164,16 @@ namespace system_ogloszeniowy
                     {
                         Text = "Mój Profil",
                         FontWeight = FontWeights.Bold,
-                        FontSize = 24,  // Zwiększenie rozmiaru czcionki
+                        FontSize = 24, 
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        Margin = new Thickness(0, 20, 0, 10),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 20, 0, 10), 
                     };
 
                     Border border = new Border()
                     {
                         BorderBrush = Brushes.Black,
                         BorderThickness = new Thickness(1),
-                        Width = 350,  // Zwiększenie szerokości karty
+                        Width = 350,  
                         Margin = new Thickness(10),
                     };
 
@@ -191,10 +182,10 @@ namespace system_ogloszeniowy
                     {
                         image = new Image()
                         {
-                            Height = 200,  // Zwiększenie wysokości zdjęcia
-                            Width = 200,   // Zwiększenie szerokości zdjęcia
+                            Height = 200, 
+                            Width = 200,  
                             Source = new BitmapImage(new Uri(userData.LinkDoZdjecia)),
-                            Margin = new Thickness(0, 10, 0, 10),  // Zwiększenie marginesu
+                            Margin = new Thickness(0, 10, 0, 10),  
                         };
                     }
 
@@ -203,61 +194,60 @@ namespace system_ogloszeniowy
                         Text = $"{userData.Imie} {userData.Nazwisko}",
                         FontWeight = FontWeights.Bold,
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        FontSize = 18,  // Zwiększenie rozmiaru czcionki
-                        Margin = new Thickness(0, 10, 0, 5),  // Zwiększenie marginesu
+                        FontSize = 18,  
+                        Margin = new Thickness(0, 10, 0, 5), 
                     };
 
                     TextBlock emailTextBlock = new TextBlock()
                     {
                         Text = $"Email: {userData.Email}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5), 
                     };
 
                     TextBlock dateUrodzeniaTextBlock = new TextBlock()
                     {
                         Text = $"Data urodzenia: {userData.DateUrodzenia}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5), 
                     };
 
                     TextBlock telefonTextBlock = new TextBlock()
                     {
                         Text = $"Telefon: {userData.Telefon}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5), 
                     };
 
                     // Dodaj dodatkowe informacje
                     TextBlock adresTextBlock = new TextBlock()
                     {
                         Text = $"Adres: {userData.Adres}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5), 
                     };
 
                     TextBlock stanowiskoPracyTextBlock = new TextBlock()
                     {
                         Text = $"Stanowisko pracy: {userData.StanowiskoPracy}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5), 
                     };
 
                     TextBlock opisPracyTextBlock = new TextBlock()
                     {
                         Text = $"Opis pracy: {userData.OpisPracy}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5),  
                     };
 
                     TextBlock podsumowanieZawodoweTextBlock = new TextBlock()
                     {
                         Text = $"Podsumowanie zawodowe: {userData.PodsumowanieZawodowe}",
-                        Margin = new Thickness(0, 5, 0, 5),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 5),  
                     };
 
                     TextBlock githubProfilTextBlock = new TextBlock()
                     {
                         Text = $"Profil GitHub: {userData.GithubProfil}",
-                        Margin = new Thickness(0, 5, 0, 10),  // Zwiększenie marginesu
+                        Margin = new Thickness(0, 5, 0, 10), 
                     };
            
 
-                    // Dodaj więcej informacji na temat użytkownika według potrzeb
 
                     StackPanel stackPanel = new StackPanel();
                     stackPanel.Children.Add(headerTextBlock);
@@ -277,7 +267,6 @@ namespace system_ogloszeniowy
 
                     border.MouseLeftButtonDown += (sender, e) =>
                     {
-                        // Przejście do szczegółów użytkownika
                         PrzejdzDoStronySzczegolowUzytkownika(userData);
                     };
                 }
@@ -295,7 +284,7 @@ namespace system_ogloszeniowy
         {
             SzczegolyOferty szczegoly = new SzczegolyOferty();
             szczegoly.Show();
-            Close(); 
+            Close();
         }
         private void StronaGlowna_Click(object sender, RoutedEventArgs e)
         {

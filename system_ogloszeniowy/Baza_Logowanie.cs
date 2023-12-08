@@ -16,13 +16,11 @@ namespace system_ogloszeniowy
             {
                 connection.Open();
 
-                // Tabela user
                 string createUserTableQuery = "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, password TEXT, isadmin INTEGER, " +
                                             "imie TEXT, nazwisko TEXT, dateurodzenia TEXT, telefon TEXT, linkdozdjecia TEXT, adres TEXT, stanowiskopracy TEXT, " +
                                             "opispracy TEXT, podsumowaniezawodowe TEXT, githubprofil TEXT)";
                 ExecuteNonQuery(createUserTableQuery, connection);
 
-                // Tabela user_session (zmiana nazwy z session na user_session)
                 string createUserSessionTableQuery = "CREATE TABLE IF NOT EXISTS user_session (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT)";
                 ExecuteNonQuery(createUserSessionTableQuery, connection);
 
@@ -36,14 +34,11 @@ namespace system_ogloszeniowy
                                       string dateurodzenia, string telefon, string linkdozdjecia, string adres,
                                       string stanowiskopracy, string opispracy, string podsumowaniezawodowe, string githubprofil)
         {
-            // Sprawdzenie, czy użytkownik o podanym adresie e-mail już istnieje
             if (IsEmailAlreadyRegistered(email))
             {
-                // Możesz zwrócić informację, że użytkownik o tym adresie e-mail już istnieje
                 return false;
             }
 
-            // Jeśli użytkownik o podanym adresie e-mail nie istnieje, dodaj go do bazy danych
             string insertUserQuery = "INSERT INTO user (email, password, isadmin, imie, nazwisko, dateurodzenia, telefon, linkdozdjecia, " +
                                      "adres, stanowiskopracy, opispracy, podsumowaniezawodowe, githubprofil) " +
                                      "VALUES (@email, @password, @isadmin, @imie, @nazwisko, @dateurodzenia, @telefon, @linkdozdjecia, " +
@@ -105,7 +100,6 @@ namespace system_ogloszeniowy
             public string PodsumowanieZawodowe { get; set; }
             public string GithubProfil { get; set; }
 
-            // Dodaj inne właściwości użytkownika według potrzeb
         }
         public static class SessionManager
         {
@@ -120,7 +114,6 @@ namespace system_ogloszeniowy
             {
                 loggedInUser = email;
 
-                // Ustaw także ID zalogowanego użytkownika
                 loggedInUserId = GetUserIdByEmail(email);
             }
 
@@ -130,13 +123,11 @@ namespace system_ogloszeniowy
                 loggedInUserId = 0;
             }
 
-            // Metoda ustawiająca identyfikator zalogowanego użytkownika
             public static void SetLoggedInUserId(int userId)
             {
                 loggedInUserId = userId;
             }
 
-            // Metoda pobierająca identyfikator zalogowanego użytkownika
             public static int GetLoggedInUserId()
             {
                 return loggedInUserId;
@@ -161,7 +152,6 @@ namespace system_ogloszeniowy
 
         public static void CheckLoggedInUser()
         {
-            // Sprawdź, czy użytkownik jest zalogowany, i uzyskaj jego dane
             if (SessionManager.IsUserLoggedIn)
             {
                 string userEmail = SessionManager.LoggedInUser;

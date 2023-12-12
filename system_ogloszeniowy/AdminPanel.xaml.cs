@@ -34,7 +34,11 @@ namespace system_ogloszeniowy
         private static string DbName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ogloszenie_baza.db");
         private void WyswietlOgloszeniaUzytkownika(int idUzytkownika)
         {
-            string selectOgloszeniaQuery = "SELECT * FROM Ogloszenie WHERE id_uzytkownika = @idUzytkownika";
+            string selectOgloszeniaQuery = "SELECT Ogloszenie.*, Firma.nazwa_firmy AS nazwa_firmy_firmy " +
+                                        "FROM Ogloszenie " +
+                                        "JOIN Firma ON Ogloszenie.id_firmy = Firma.id " +
+                                        "WHERE Ogloszenie.id_uzytkownika = @idUzytkownika";
+
 
             using (var connection = new SQLiteConnection($"Data Source={DbName};Version=3;"))
             {
@@ -70,7 +74,7 @@ namespace system_ogloszeniowy
                                 Text = $"Ogłoszenie o id: {ogloszenieId}",
                                 Margin = new Thickness(0, 5, 0, 5),
                             };
-                            string nazwaOgloszenia = reader["nazwa"].ToString();
+                            string nazwaOgloszenia = reader["nazwa_firmy_firmy"].ToString();
                             string kategoriaOgloszenia = reader["kategoria"].ToString();
                             string inneDaneOgloszenia = "Dodatkowe informacje o ogłoszeniu...";
 
@@ -99,7 +103,7 @@ namespace system_ogloszeniowy
                                 Width = 300,
                                 Margin = new Thickness(0, 10, 0, 0),
                             };
-
+                          
 
                             StackPanel stackPanel = new StackPanel();
                             stackPanel.Children.Add(nazwaOgloszeniaTextBlock);
@@ -111,10 +115,11 @@ namespace system_ogloszeniowy
                             border.Child = stackPanel;
 
                             mainGrid.Children.Add(border);
-                            border.MouseLeftButtonDown += (sender, e) =>
+                            zarzadzajbutton.Click += (sender, e) =>
                             {
                                 PrzejdzDoZarzadzania(ogloszenieId);
                             };
+
                         }
                     }
                 }

@@ -6,10 +6,31 @@
         xmlns:local="clr-namespace:system_ogloszeniowy"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Style.Triggers>
+                <Trigger Property="Content" Value="">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
     <Grid>
+        <StackPanel>
+            <Label Content="Witamy w aplikacji!" HorizontalAlignment="Center"/>
+            <Label Content="Jeśli chcesz się zalogować lub zarejestrować wciśnij odpowiednie przyciski!" HorizontalAlignment="Center"/>
+        </StackPanel>
         <StackPanel Margin="10">
-            <Button Content="Login" Click="Login_Click" Margin="0,0,0,10"/>
-            <Button Content="Register" Click="Register_Click"/>
+            <Button Content="Zaloguj się" Click="Login_Click" Margin="0,150,0,10"/>
+            <Button Content="Zarejestruj się" Click="Register_Click"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -103,7 +103,13 @@ namespace system_ogloszeniowy
                                 Width = 300,
                                 Margin = new Thickness(0, 10, 0, 0),
                             };
-                          
+                            Button usunButton = new Button()
+                            {
+                                Content = "Usuń Ogłoszenie",
+                                Width = 300,
+                                Margin = new Thickness(0, 10, 0, 0),
+                            };
+
 
                             StackPanel stackPanel = new StackPanel();
                             stackPanel.Children.Add(nazwaOgloszeniaTextBlock);
@@ -111,6 +117,7 @@ namespace system_ogloszeniowy
                             stackPanel.Children.Add(kategoriaOgloszeniaTextBlock);
                             stackPanel.Children.Add(inneDaneOgloszeniaTextBlock);
                             stackPanel.Children.Add(zarzadzajbutton);
+                            stackPanel.Children.Add(usunButton);
 
                             border.Child = stackPanel;
 
@@ -119,8 +126,44 @@ namespace system_ogloszeniowy
                             {
                                 PrzejdzDoZarzadzania(ogloszenieId);
                             };
+                            usunButton.Click += (sender, e) =>
+                            {
+                                UsunOgloszenie(ogloszenieId);
+                            };
 
                         }
+                    }
+                }
+
+                connection.Close();
+            }
+        }
+        private void UsunOgloszenie(int ogloszenieId)
+        {
+            string deleteOgloszenieQuery = "DELETE FROM Ogloszenie WHERE id = @idogloszenia";
+
+            using (var connection = new SQLiteConnection($"Data Source={DbName};Version=3;"))
+            {
+                connection.Open();
+
+                using (var command = new SQLiteCommand(deleteOgloszenieQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@idogloszenia", ogloszenieId);
+
+                    // Wykonaj zapytanie DELETE
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        // Jeśli rowsAffected > 0, to ogłoszenie zostało pomyślnie usunięte
+                        MessageBox.Show("Ogłoszenie zostało pomyślnie usunięte.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Tutaj możesz dodatkowo zaktualizować interfejs użytkownika lub podjąć inne działania po usunięciu ogłoszenia
+                    }
+                    else
+                    {
+                        // Jeśli rowsAffected <= 0, to ogłoszenie nie zostało usunięte (może nie istnieć)
+                        MessageBox.Show("Nie udało się usunąć ogłoszenia. Sprawdź, czy istnieje ogłoszenie o podanym identyfikatorze.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
 

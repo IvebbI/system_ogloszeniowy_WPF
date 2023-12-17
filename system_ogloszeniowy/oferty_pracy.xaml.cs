@@ -60,7 +60,6 @@ namespace system_ogloszeniowy
 
                 border.MouseLeftButtonDown += (sender, e) =>
                 {
-                    MessageBox.Show("Przycisnieto przycisk pozdro");
                     PrzejdzDoStronySzczegolowUzytkownika(userData, ogloszenie, firma);
                 };
 

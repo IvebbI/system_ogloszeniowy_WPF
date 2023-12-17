@@ -36,7 +36,7 @@
             <TextBox x:Name="imieTextBox" Margin="0,0,0,10"/>
 
             <TextBlock Text="Nazwisko:"/>
-            <DatePicker x:Name="nazwiskoTextBox" Margin="0,0,0,10"/>
+            <TextBox x:Name="nazwiskoTextBox" Margin="0,0,0,10"/>
 
             <TextBlock Text="Data urodzenia:"/>
             <TextBox x:Name="dateurodzeniaTextBox" Margin="0,0,0,10"/>
